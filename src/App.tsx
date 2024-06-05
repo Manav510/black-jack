@@ -1,13 +1,10 @@
-import { Stage } from "@pixi/react";
 import "@pixi/events";
+import { Stage } from "@pixi/react";
 
-import GraphicDemo from "./examples/GraphicDemo";
-import SpriteDemo from "./examples/SpriteDemo/SpriteDemo";
 import ErrorBoundary from "./ErrorBoundary";
-import Game from "./Game/Game";
 import "./App.css";
-import PattePePatta from "./PattePePatta/PattePePatta";
-
+import GameScreen from "./BlackJack/useGame";
+import BlackJack from "./BlackJack/BlackJack";
 const config = {
   size: { width: window.innerWidth, height: window.innerHeight },
   spring: { mass: 10, tension: 1000, friction: 100 },
@@ -15,22 +12,15 @@ const config = {
 };
 
 const App = () => {
-  //   return (
-  //     <ErrorBoundary>
-  //       <Stage {...config.size} options={config.stage}>
-  //         {/* <GraphicDemo /> */}
 
-  //         {/* <SpriteDemo /> */}
-
-  //       </Stage>
-  //     </ErrorBoundary>
-  //   );
 
   return (
+    // <Stage {...config.size} options={config.stage}>
     <ErrorBoundary>
-      {/* <Game /> */}
-      <PattePePatta />
+      <BlackJack />
+    {/* <GameScreen /> */}
     </ErrorBoundary>
+  // </Stage>
   );
 };
 

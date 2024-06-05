@@ -57,17 +57,15 @@ import img_TC from "../assets/deck/TC.svg";
 import img_TD from "../assets/deck/TD.svg";
 import img_TH from "../assets/deck/TH.svg";
 import img_TS from "../assets/deck/TS.svg";
-import img_base from "../assets/deck/base.svg";
-
+import img_base from "../assets/back.png"
 const config = {
   size: { width: constants.WIDTH, height: constants.HEIGHT },
   stage: { antialias: true, backgroundColor: 0x1099bb },
 };
 
-const PattePePatta = () => {
+const BlackJack = () => {
   const [textures, setTextures] = useState<any>({});
 
-  // load textures
   useEffect(() => {
     (async () => {
       const res = await Assets.load([
@@ -145,4 +143,4 @@ const PattePePatta = () => {
   );
 };
 
-export default PattePePatta;
+export default BlackJack;
