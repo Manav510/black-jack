@@ -42,7 +42,6 @@ const useGame = ({ textures }) => {
     }, [dealer_score, player_score, deck]);
 
     const deal_cards = () => {
-        
         set_show_second_card(false);
         set_game_started(true);
         const shuffled_deck = _.shuffle(_.filter(constants.CARDS, (card) => card !== constants.CARDS.base));
@@ -103,49 +102,40 @@ const useGame = ({ textures }) => {
         set_show_second_card(false);
     };
 
+    
+const dealer_result = (current_dealer_hand) => {
+        let new_dealer_hand = [...current_dealer_hand];
+        let new_score = calculateScore(new_dealer_hand);
+       
+        while (new_score < player_score_ref.current && new_score < 22 && deck.length > 0) {
+         const new_card = deck.pop();
+         new_dealer_hand.push(new_card);
+       
+         setTimeout(() => {
+          set_dealer_hand(new_dealer_hand); 
+          set_dealer_score(new_score);
+          set_deck(deck); 
+         }, 1000); 
+
+            new_score = calculateScore(new_dealer_hand);
+        }
+       
+        const final_result = new_score > 21 || new_score < player_score_ref.current ? "Player wins" : "Dealer wins";
+        set_result(final_result);
+        setTimeout(() => setShowPopup(true), 2000);
+       };
     useEffect(() => {
         if (isStanding) {
-            const dealer_result = (current_dealer_hand) => {
-                const current_dealer_score = calculateScore(current_dealer_hand);
-
-
-                if (current_dealer_score < player_score_ref.current) {
-                    const new_deck = [...deck_ref.current];
-                    const new_card = new_deck.pop();
-                    const new_dealer_hand = [...current_dealer_hand, new_card];
-                    const new_score = calculateScore(new_dealer_hand);
-                    
-                    set_deck(new_deck);
-                    
-                    
-                    setTimeout(() => {
-                        set_dealer_hand(new_dealer_hand);
-                        set_dealer_score(new_score);
-
-                        if (new_score < player_score_ref.current && new_score < 22) {
-                            setTimeout(() => dealer_result(new_dealer_hand), 500);
-                        } else {
-                            const final_result = new_score > 21 || new_score < player_score_ref.current ? "Player wins" : "Dealer wins";
-                            set_result(final_result);
-                            setTimeout(() => setShowPopup(true), 2000); // Apply a delay of 2 seconds before showing the popup
-                        }
-                    }, 500); 
-                } else {
-                    const final_result = current_dealer_score <= 21 ? "Dealer wins" : "Player wins";
-                    set_result(final_result);
-                    setTimeout(() => setShowPopup(true), 2000);
-                }
-            };
 
             dealer_result(dealer_hand);
         }
-    }, [isStanding, dealer_hand]);
+    }, [isStanding]);
 
     useEffect(() => {
         if (player_score > 21) {
             const final_result = "Dealer wins";
             set_result(final_result);
-            setTimeout(() => setShowPopup(true), 1000); 
+            setTimeout(() => setShowPopup(true), 1000);
         }
     }, [player_score]);
 
