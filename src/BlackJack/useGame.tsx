@@ -103,27 +103,35 @@ const useGame = ({ textures }) => {
     };
 
     
-const dealer_result = (current_dealer_hand) => {
+    const dealer_result = (current_dealer_hand) => {
         let new_dealer_hand = [...current_dealer_hand];
         let new_score = calculateScore(new_dealer_hand);
-       
-        while (new_score < player_score_ref.current && new_score < 22 && deck.length > 0) {
-         const new_card = deck.pop();
-         new_dealer_hand.push(new_card);
-       
-         setTimeout(() => {
-          set_dealer_hand(new_dealer_hand); 
-          set_dealer_score(new_score);
-          set_deck(deck); 
-         }, 1000); 
 
-            new_score = calculateScore(new_dealer_hand);
-        }
-       
-        const final_result = new_score > 21 || new_score < player_score_ref.current ? "Player wins" : "Dealer wins";
-        set_result(final_result);
-        setTimeout(() => setShowPopup(true), 2000);
-       };
+        const drawCard = () => {
+            if (new_score < player_score_ref.current && new_score < 22 && deck.length > 0) {
+                const new_card = deck.pop();
+                new_dealer_hand.push(new_card);
+                new_score = calculateScore(new_dealer_hand);
+
+                setTimeout(() => {
+                    set_dealer_hand([...new_dealer_hand]); 
+                    set_dealer_score(new_score);
+                    set_deck([...deck]);
+
+                    
+                    drawCard();
+                }, 1000); 
+            } else {
+                const final_result = new_score > 21 || new_score < player_score_ref.current ? "Player wins" : "Dealer wins";
+                set_result(final_result);
+                setTimeout(() => setShowPopup(true), 2000); 
+            }
+        };
+
+        // Start drawing cards
+        drawCard();
+    };
+
     useEffect(() => {
         if (isStanding) {
 

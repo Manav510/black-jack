@@ -47,7 +47,7 @@ const PlayerTurn = () => {
         { game_started &&
         <DealButton
         on_click={stand_cards}
-        x={constants.WIDTH/2 + 100}
+        x={constants.WIDTH/2 + 200}
         y={constants.BOTTOM_DECK_Y}
         width={100}
         height={30}
